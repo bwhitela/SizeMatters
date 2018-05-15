@@ -1,0 +1,2 @@
+instamax
+Pillow==5.1.0
