@@ -101,6 +101,7 @@ def maximize_image(input_file, output_file, rotate=None, color='white',
     upper = (INSTA_MAX_HEIGHT / 2) - (new_height / 2)
     lower = upper + new_height
     background_img.paste(scaled_img, (left, upper, right, lower))
+    final_img = background_img
 
     # Check the quality setting.
     if quality and int(quality) < 1:
@@ -110,11 +111,17 @@ def maximize_image(input_file, output_file, rotate=None, color='white',
     else:
         quality = int(quality)
 
+    # Handle possible issues with alpha channels.
+    temp_img = final_img.convert('RGBA')
+    alpha_replace_img = PIL.Image.new('RGBA', temp_img.size, 'white')
+    composite_img = PIL.Image.alpha_composite(alpha_replace_img, temp_img)
+    final_img = composite_img.convert('RGB')
+
     # Finish.
-    background_img.save(output_file, 'jpeg',
-                        quality=quality,
-                        icc_profile=img.info.get('icc_profile'),
-                        exif=img.info.get('exif'))
+    final_img.save(output_file, 'jpeg',
+                   quality=quality,
+                   icc_profile=img.info.get('icc_profile'),
+                   exif=img.info.get('exif', ''))
 
 
 def parse_cmd_line():
