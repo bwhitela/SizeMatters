@@ -120,7 +120,7 @@ WSGI-compliant app. Here is the docstring that defines how it is used::
         - 500: If anything else raises an exception.
 
 Because this is a WSGI-compliant web app, you can use it with your favorite
-wrapper, weather that is the reference one provided by Python, or something like
+wrapper, whether that is the reference one provided by Python, or something like
 uWSGI (which is what I use).
 
 ``instamax.html``
