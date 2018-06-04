@@ -10,7 +10,7 @@ the provided parameters.
 
 :Author: Brett Whitelaw (GitHub: bwhitela)
 :Date: 2018/05/14
-:Last Update: 2018/05/14
+:Last Update: 2018/06/04
 """
 
 import cgi
@@ -20,13 +20,10 @@ import instamax
 
 
 FILE_PARAM = 'file'
-ROTATE_PARAM = 'rotate'
 COLOR_PARAM = 'color'
 QUALITY_PARAM = 'quality'
-DEFAULT_ROTATE = 'none'
 DEFAULT_COLOR = 'white'
 DEFUALT_QUALITY = '75'
-ROTATE_STRINGS = ['clockwise', 'counter-clockwise', 'none']
 AVAILABLE_COLOR_MAP = instamax.AVAILABLE_COLOR_MAP
 
 
@@ -38,14 +35,11 @@ def instamax_app(environ, start_response):
     """Simple WSGI application for the InstaMax tool/function.
 
     A WSGI compliant application that only accepts POSTed multipart forms
-    with `file`, `color`, `rotate`, and `quality`. The returned image will
-    always be in JPEG format.
+    with `file`, `color`, and `quality`. The returned image will always be in
+    JPEG format.
 
     :Form Parameters:
         - `file`: Should be a JPEG file (although others may work).
-        - `rotate`: Should be 90 degrees 'clockwise', 'counter-clockwise', or
-            'none' (strings) to indicate how the image should be rotated.
-            Default is 'none' for no rotation.
         - `color`: Should be any of the standard HTML color names (string).
             Default is 'white'.
         - `quality`: Should be an integer from 1 to 100 to indicate the quality
@@ -72,12 +66,6 @@ def instamax_app(environ, start_response):
 
         fs = cgi.FieldStorage(fp=environ['wsgi.input'], environ=environ)
 
-        rotate = fs.getfirst(ROTATE_PARAM, DEFAULT_ROTATE)
-        if rotate.lower() in ROTATE_STRINGS:
-            rotate = rotate.lower()
-        else:
-            raise FormError
-
         color = fs.getfirst(COLOR_PARAM, DEFAULT_COLOR)
         if color not in AVAILABLE_COLOR_MAP:
             raise FormError
@@ -95,8 +83,8 @@ def instamax_app(environ, start_response):
 
         img_out_fh = cStringIO.StringIO()
 
-        instamax.maximize_image(img_in_fh, img_out_fh, rotate=rotate,
-                                color=color)
+        instamax.maximize_image(img_in_fh, img_out_fh, color=color,
+            quality=quality)
         img_in_fh.close()
 
         status = '201 Created'

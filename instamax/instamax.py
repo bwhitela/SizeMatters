@@ -14,7 +14,7 @@ you post.
 
 :Author: Brett Whitelaw (GitHub: bwhitela)
 :Date: 2018/05/14
-:Last Update: 2018/05/14
+:Last Update: 2018/06/04
 """
 
 import argparse
@@ -29,15 +29,11 @@ INSTA_MAX_HEIGHT = 1350
 AVAILABLE_COLOR_MAP = PIL.ImageColor.colormap
 
 
-def maximize_image(input_file, output_file, rotate=None, color='white',
-                   quality=75):
+def maximize_image(input_file, output_file, color='white', quality=75):
     """Maximize an image to the resolution limits imposed by Instagram.
 
     Note that your image will not be cropped in any way. The new space created
-    around your image will be whatever color you specify. You can rotate your
-    image, if you'd like, since Instagram doesn't operate in landscape mode, so
-    you can get the most pixels Instagram will let you have for your landscape
-    image.
+    around your image will be whatever color you specify.
 
     Also note that every attempt has been made to keep metadata, etc. intact.
     Bicubic interpolation is being used to resize your image. JPEG image
@@ -49,8 +45,6 @@ def maximize_image(input_file, output_file, rotate=None, color='white',
             image.
         - `output_file`: File name (as a string) or a file object for the output
             image (JPEG).
-        - `rotate`: Rotate the image 90 degrees 'clockwise',
-            'counter-clockwise', or None? Default is None.
         - `color`: A standard HTML color to use as the background (as a string).
             Default is 'white'.
         - `quality`: The quality setting for JPEG compression as an integer
@@ -64,12 +58,6 @@ def maximize_image(input_file, output_file, rotate=None, color='white',
         None. The PIL library may throw some, depending on what you pass in.
     """
     img = PIL.Image.open(input_file)
-
-    if rotate and rotate.lower() == 'clockwise':
-        # 90 degrees, clockwise, is 270 degrees, counter-clockwise.
-        img = img.rotate(270, expand=True)
-    elif rotate and rotate.lower() == 'counter-clockwise':
-        img = img.rotate(90, expand=True)
 
     width, height = img.size
     # If the height is greater than the Instagram max ratio, sides will be
@@ -141,10 +129,6 @@ def parse_cmd_line():
     parser.add_argument('output_file',
                         help='File name (with any necessary path information) '
                              'where the output JPEG will be written.')
-    parser.add_argument('-r', '--rotate', dest='rotate',
-                        help='Rotate the image 90 degrees "clockwise" or '
-                             '"counter-clockwise". (Default is no rotation)',
-                        default=None)
     parser.add_argument('-c', '--color', dest='color',
                         help='Common HTML color for background. (Default: '
                              'white)',
@@ -159,7 +143,7 @@ def main():
     args = parse_cmd_line()
     with open(args.output_file, 'wb') as out_fh:
         with open(args.input_file, 'rb') as in_fh:
-            maximize_image(in_fh, out_fh, args.rotate, args.color, args.quality)
+            maximize_image(in_fh, out_fh, args.color, args.quality)
 
 
 if __name__ == "__main__":

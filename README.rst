@@ -36,10 +36,7 @@ docstring for the primary ``maximize_image`` function::
     Maximize an image to the resolution limits imposed by Instagram.
 
     Note that your image will not be cropped in any way. The new space created
-    around your image will be whatever color you specify. You can rotate your
-    image, if you'd like, since Instagram doesn't operate in landscape mode, so
-    you can get the most pixels Instagram will let you have for your landscape
-    image.
+    around your image will be whatever color you specify.
 
     Also note that every attempt has been made to keep metadata, etc. intact.
     Bicubic interpolation is being used to resize your image. JPEG image
@@ -51,8 +48,6 @@ docstring for the primary ``maximize_image`` function::
             image.
         - `output_file`: File name (as a string) or a file object for the output
             image (JPEG).
-        - `rotate`: Rotate the image 90 degrees 'clockwise',
-            'counter-clockwise', or None? Default is None.
         - `color`: A standard HTML color to use as the background (as a string).
             Default is 'white'.
         - `quality`: The quality setting for JPEG compression as an integer
@@ -68,8 +63,7 @@ docstring for the primary ``maximize_image`` function::
 If you just want to run this as a script from the command line, here's the
 usage::
 
-    usage: instamax.py [-h] [-r ROTATE] [-c COLOR] [-q QUALITY]
-                       input_file output_file
+    usage: instamax.py [-h] [-c COLOR] [-q QUALITY] input_file output_file
 
     InstaMax: This script will take the input image and maximize it to fit the
     maximum dimensions that Instagram allows. Your picture will not be cropped,
@@ -82,9 +76,6 @@ usage::
 
     optional arguments:
       -h, --help            show this help message and exit
-      -r ROTATE, --rotate ROTATE
-                            Rotate the image 90 degrees "clockwise" or "counter-
-                            clockwise". (Default is no rotation)
       -c COLOR, --color COLOR
                             Common HTML color for background. (Default: white)
       -q QUALITY, --quality QUALITY
@@ -100,14 +91,11 @@ WSGI-compliant app. Here is the docstring that defines how it is used::
     Simple WSGI application for the InstaMax tool/function.
 
     A WSGI compliant application that only accepts POSTed multipart forms
-    with `file`, `color`, `rotate`, and `quality`. The returned image will
-    always be in JPEG format.
+    with `file`, `color`, and `quality`. The returned image will always be in
+    JPEG format.
 
     :Form Parameters:
         - `file`: Should be a JPEG file (although others may work).
-        - `rotate`: Should be 90 degrees 'clockwise', 'counter-clockwise', or
-            'none' (strings) to indicate how the image should be rotated.
-            Default is 'none' for no rotation.
         - `color`: Should be any of the standard HTML color names (string).
             Default is 'white'.
         - `quality`: Should be an integer from 1 to 100 to indicate the quality
