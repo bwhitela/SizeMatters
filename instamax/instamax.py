@@ -19,6 +19,7 @@ you post.
 
 import argparse
 
+import PIL.ExifTags
 import PIL.Image
 import PIL.ImageColor
 
@@ -59,18 +60,39 @@ def maximize_image(input_file, output_file, color='white', quality=75):
     """
     img = PIL.Image.open(input_file)
 
+    # Because orientation information is in the metadata, which will effect
+    # how the image is processed, we'll check this, and change our working
+    # reference point to match the orientation (i.e. if the image orientation
+    # is +/- 90 degrees, we'll flip length and width information for our
+    # working space).
+    exif_data = img._getexif()
+    # Determine numeric key in EXIF for 'Orientation'.
+    orientation_key = None
+    for exif_code, exif_string in PIL.ExifTags.TAGS.iteritems():
+        if exif_string == 'Orientation':
+            orientation_key = exif_code
+            break
+    # Look at the metadata to determine orientation.
+    output_width = INSTA_MAX_WIDTH
+    output_height = INSTA_MAX_HEIGHT
+    if exif_data.get(orientation_key):
+        if exif_data[orientation_key] in [5, 6, 7, 8]:
+            # Rotated +/- 90 degrees. Might be mirrored but doesn't matter.
+            output_width = INSTA_MAX_HEIGHT
+            output_height = INSTA_MAX_WIDTH
+
     width, height = img.size
     # If the height is greater than the Instagram max ratio, sides will be
     # filled.
-    if ((float(INSTA_MAX_HEIGHT) / float(INSTA_MAX_WIDTH)) <
+    if ((float(output_height) / float(output_width)) <
         (float(height) / float(width))):
-        new_height = INSTA_MAX_HEIGHT
+        new_height = output_height
         scale_factor = float(new_height) / float(height)
         new_width = int(round(width * scale_factor))
     # If the width is greater than the Instagram max ratio, top and bottom will
     # be filled.
     else:
-        new_width = INSTA_MAX_WIDTH
+        new_width = output_width
         scale_factor = float(new_width) / float(width)
         new_height = int(round(height * scale_factor))
     # Now we know exactly how to scale it.
@@ -80,13 +102,13 @@ def maximize_image(input_file, output_file, color='white', quality=75):
     if color not in AVAILABLE_COLOR_MAP:
         color = 'white'
     background_img = PIL.Image.new(img.mode,
-                                   (INSTA_MAX_WIDTH, INSTA_MAX_HEIGHT),
+                                   (output_width, output_height),
                                    color)
 
     # Figure out how to center the image on the background.
-    left = (INSTA_MAX_WIDTH / 2) - (new_width / 2)
+    left = (output_width / 2) - (new_width / 2)
     right = left + new_width
-    upper = (INSTA_MAX_HEIGHT / 2) - (new_height / 2)
+    upper = (output_height / 2) - (new_height / 2)
     lower = upper + new_height
     background_img.paste(scaled_img, (left, upper, right, lower))
     final_img = background_img
