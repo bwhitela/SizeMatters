@@ -1,5 +1,5 @@
-InstaMax
-========
+SizeMatters (formerly InstaMax)
+===============================
 
 Maximize Image Size for Instagram
 ---------------------------------
