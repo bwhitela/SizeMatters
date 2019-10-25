@@ -65,7 +65,7 @@ def maximize_image(input_file, output_file, color='white', quality=75):
     # reference point to match the orientation (i.e. if the image orientation
     # is +/- 90 degrees, we'll flip length and width information for our
     # working space).
-    exif_data = img._getexif()
+    exif_data = img.getexif()
     # Determine numeric key in EXIF for 'Orientation'.
     orientation_key = None
     for exif_code, exif_string in PIL.ExifTags.TAGS.iteritems():

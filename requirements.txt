@@ -1,2 +1,2 @@
 instamax
-Pillow==5.1.0
+Pillow==6.2.1

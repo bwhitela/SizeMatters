@@ -20,7 +20,7 @@ from setuptools import find_packages
 version = '1.0.0'
 
 install_requires = [
-    'Pillow==5.1.0'
+    'Pillow==6.2.1'
 ]
 
 
