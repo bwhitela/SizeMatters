@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Copyright (c) 2018 Brett Whitelaw
 # All rights reserved.
 # Unauthorized redistribution prohibited.
 
-"""InstaMax: Maximize an image to the resolution limits imposed by Instagram.
+"""SizeMatters: Maximize an image to the resolution limits imposed by Instagram.
 
 This script contains a single function to maximize an image based on
 Instagram's maximum resolution limitations (although this script can be called
@@ -14,7 +14,7 @@ you post.
 
 :Author: Brett Whitelaw (GitHub: bwhitela)
 :Date: 2018/05/14
-:Last Update: 2018/06/06
+:Last Update: 2020/08/01
 """
 
 import argparse
@@ -68,7 +68,7 @@ def maximize_image(input_file, output_file, color='white', quality=75):
     exif_data = img.getexif()
     # Determine numeric key in EXIF for 'Orientation'.
     orientation_key = None
-    for exif_code, exif_string in PIL.ExifTags.TAGS.iteritems():
+    for exif_code, exif_string in PIL.ExifTags.TAGS.items():
         if exif_string == 'Orientation':
             orientation_key = exif_code
             break
@@ -106,10 +106,10 @@ def maximize_image(input_file, output_file, color='white', quality=75):
                                    color)
 
     # Figure out how to center the image on the background.
-    left = (output_width / 2) - (new_width / 2)
-    right = left + new_width
-    upper = (output_height / 2) - (new_height / 2)
-    lower = upper + new_height
+    left = int((output_width / 2) - (new_width / 2))
+    right = int(left + new_width)
+    upper = int((output_height / 2) - (new_height / 2))
+    lower = int(upper + new_height)
     background_img.paste(scaled_img, (left, upper, right, lower))
     final_img = background_img
 
@@ -140,7 +140,7 @@ def parse_cmd_line():
     :Returns:
         All arguments as an parsed argument object.
     """
-    description = 'InstaMax:\n' + \
+    description = 'SizeMatters:\n' + \
                   'This script will take the input image and maximize it ' + \
                   'to fit the maximum dimensions that Instagram allows. ' + \
                   'Your picture will not be cropped, but the background ' + \

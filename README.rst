@@ -18,12 +18,12 @@ Requirements
 
 The only requirement of this tool is the Pillow image processing library,
 which can be found in PyPI. I have included a ``requirements.txt`` file
-if you use ``pip`` and a ``setup.py`` file, as well. This tool has only been
-run with Python 2.7, but I have no reason to believe it won't work with most
-versions.
+if you use ``pip`` and a ``setup.py`` file, as well. This tool will now only
+run with Python 3, as it requires the latest version of Pillow which is now
+only supported on Python 3.
 
-``instamax.py``
----------------
+``sizematters.py``
+------------------
 
 This script contains a single function to maximize an image based on Instagram's
 maximum size limitations (although this script can be called from the command
@@ -63,9 +63,9 @@ docstring for the primary ``maximize_image`` function::
 If you just want to run this as a script from the command line, here's the
 usage::
 
-    usage: instamax.py [-h] [-c COLOR] [-q QUALITY] input_file output_file
+    usage: sizematters.py [-h] [-c COLOR] [-q QUALITY] input_file output_file
 
-    InstaMax: This script will take the input image and maximize it to fit the
+    SizeMatters: This script will take the input image and maximize it to fit the
     maximum dimensions that Instagram allows. Your picture will not be cropped,
     but the background will be filled with your choice of color.
 
@@ -81,14 +81,14 @@ usage::
       -q QUALITY, --quality QUALITY
                             Output JPEG image quality. (Default: 75)
 
-``instamax_wsgi.py``
---------------------
+``sizematters_wsgi.py``
+-----------------------
 
-This script contains a very simple WSGI-compliant web app to wrap the InstaMax
-tool. It contains a single function, ``instamax_app``, which serves as the
+This script contains a very simple WSGI-compliant web app to wrap the SizeMatters
+tool. It contains a single function, ``sizematters_app``, which serves as the
 WSGI-compliant app. Here is the docstring that defines how it is used::
 
-    Simple WSGI application for the InstaMax tool/function.
+    Simple WSGI application for the SizeMatters tool/function.
 
     A WSGI compliant application that only accepts POSTed multipart forms
     with `file`, `color`, and `quality`. The returned image will always be in
@@ -111,9 +111,9 @@ Because this is a WSGI-compliant web app, you can use it with your favorite
 wrapper, whether that is the reference one provided by Python, or something like
 uWSGI (which is what I use).
 
-``instamax.html``
------------------
+``sizematters.html``
+--------------------
 
 I have also provided a very basic/stripped-down HTML file that contains a proper
-form to send requests to the InstaMax web app. If you make use of this, you'll
+form to send requests to the SizeMatters web app. If you make use of this, you'll
 likely need to tweak it to meet your needs.

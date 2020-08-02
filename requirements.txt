@@ -1,2 +1,2 @@
-instamax
-Pillow==6.2.2
+sizematters
+Pillow==7.2.0

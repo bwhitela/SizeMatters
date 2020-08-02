@@ -2,21 +2,21 @@
 # All rights reserved.
 # Unauthorized redistribution prohibited.
 
-"""This script contains a basic WSGI compliant application to wrap InstaMax.
+"""This script contains a basic WSGI compliant application to wrap SizeMatters.
 
 This simple WSGI application will take in an image file and some parameters,
-via a multipart POSTed form and return a JPEG from the InstaMax tool, using
+via a multipart POSTed form and return a JPEG from the SizeMatters tool, using
 the provided parameters.
 
 :Author: Brett Whitelaw (GitHub: bwhitela)
 :Date: 2018/05/14
-:Last Update: 2018/06/04
+:Last Update: 2020/08/01
 """
 
 import cgi
 import cStringIO
 
-import instamax
+import sizematters
 
 
 FILE_PARAM = 'file'
@@ -24,15 +24,15 @@ COLOR_PARAM = 'color'
 QUALITY_PARAM = 'quality'
 DEFAULT_COLOR = 'white'
 DEFUALT_QUALITY = '75'
-AVAILABLE_COLOR_MAP = instamax.AVAILABLE_COLOR_MAP
+AVAILABLE_COLOR_MAP = sizematters.AVAILABLE_COLOR_MAP
 
 
 class FormError(Exception):
     pass
 
 
-def instamax_app(environ, start_response):
-    """Simple WSGI application for the InstaMax tool/function.
+def sizematters_app(environ, start_response):
+    """Simple WSGI application for the SizeMatters tool/function.
 
     A WSGI compliant application that only accepts POSTed multipart forms
     with `file`, `color`, and `quality`. The returned image will always be in
@@ -83,7 +83,7 @@ def instamax_app(environ, start_response):
 
         img_out_fh = cStringIO.StringIO()
 
-        instamax.maximize_image(img_in_fh, img_out_fh, color=color,
+        sizematters.maximize_image(img_in_fh, img_out_fh, color=color,
             quality=quality)
         img_in_fh.close()
 
