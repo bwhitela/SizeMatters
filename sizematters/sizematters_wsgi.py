@@ -14,7 +14,7 @@ the provided parameters.
 """
 
 import cgi
-import cStringIO
+import io
 
 import sizematters
 
@@ -79,9 +79,9 @@ def sizematters_app(environ, start_response):
         img_as_str = fs.getfirst(FILE_PARAM, None)
         if not img_as_str:
             raise FormError
-        img_in_fh = cStringIO.StringIO(img_as_str)
+        img_in_fh = io.BytesIO(img_as_str)
 
-        img_out_fh = cStringIO.StringIO()
+        img_out_fh = io.BytesIO()
 
         sizematters.maximize_image(img_in_fh, img_out_fh, color=color,
             quality=quality)
