@@ -8,7 +8,7 @@
 
 :Author: Brett Whitelaw (GitHub: bwhitela)
 :Date: 2018/05/14
-:Last Update: 2021/03/20
+:Last Update: 2021/09/09
 """
 
 import sys
@@ -20,7 +20,7 @@ from setuptools import find_packages
 version = '2.0.0'
 
 install_requires = [
-    'Pillow==8.1.2'
+    'Pillow==8.3.2'
 ]
 
 
