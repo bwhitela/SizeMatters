@@ -111,6 +111,38 @@ Because this is a WSGI-compliant web app, you can use it with your favorite
 wrapper, whether that is the reference one provided by Python, or something like
 uWSGI (which is what I use).
 
+``sizematters_lambda.py``
+-------------------------
+
+This script contains a http-triggered (API Gateway) AWS Lambda handler function
+that wraps the SizeMatters tool. It contains a single function,
+``sizematters_lambda``, which serves as the Lambda handler function. Here is the
+docstring that defines how it is used::
+
+    Simple AWS Lambda handler function for the SizeMatters tool/function.
+
+    An http-triggered AWS Lambda handler function that only accepts POSTed
+    multipart forms with `file`, `color`, and `quality`. The returned image
+    will always be in JPEG format.
+
+    :Form Parameters:
+        - `file`: Should be a JPEG file (although others may work).
+        - `color`: Should be any of the standard HTML color names (string).
+            Default is 'white'.
+        - `quality`: Should be an integer from 1 to 100 to indicate the quality
+            setting for JPEG compression. Default is 75.
+
+    :Errors:
+        - 400: If the form parameters are bad or the Content-type is not
+            multipart/form-data.
+        - 405: If the request method is anything other than POST.
+        - 500: If anything else raises an exception.
+
+This should be able to simply be dropped in, and used as is within an AWS
+Lambda. This will require the Pillow package to be available, though, which
+means adding a "layer" with the package. This code is in use on the SizeMatters
+website.
+
 ``sizematters.html``
 --------------------
 
